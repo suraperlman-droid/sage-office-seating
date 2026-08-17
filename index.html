@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAGE Office Seating</title>
+<style>
+:root{
+  --navy:#1c2b45; --teal:#1f7a72; --teal-light:#2e9c8f; --gold:#d1a545; --gold-dark:#9c7a2c;
+  --cream:#fbf8f2; --cream2:#f4efe1; --ink:#26241d; --muted:#7a7566; --border:#e6ddc8;
+  --card:#ffffff; --green:#1a8f5e; --green-bg:#e6f7ef; --amber:#b8860b; --amber-bg:#fdf3dc;
+  --red:#c0392b; --red-bg:#fbeae8; --gray:#a39c86; --gray-bg:#f1ecdd;
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:linear-gradient(180deg,var(--cream) 0%,var(--cream2) 100%);color:var(--ink);}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;}
+
+header{background:linear-gradient(120deg,var(--navy) 0%,var(--teal) 100%);color:#fff;padding:20px 28px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;}
+header h1{margin:0;font-size:21px;font-weight:600;letter-spacing:.2px;}
+header .sub{font-size:12.5px;color:#dce6e4;margin-top:3px;}
+.header-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+button{font-family:inherit;cursor:pointer;border:none;border-radius:7px;font-size:13px;padding:8px 15px;font-weight:600;transition:background .12s,transform .06s;}
+button:active{transform:translateY(1px);}
+.btn-gold{background:var(--gold);color:#3a2c08;}
+.btn-gold:hover{background:#c39638;}
+.btn-primary{background:var(--teal);color:#fff;}
+.btn-primary:hover{background:#186358;}
+.btn-secondary{background:#fff;color:var(--navy);border:1px solid var(--border);}
+.btn-secondary:hover{background:#f6f1e4;}
+.btn-ghost{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.35);}
+.btn-ghost:hover{background:rgba(255,255,255,.24);}
+.btn-small{padding:6px 11px;font-size:12px;}
+.btn-danger{background:var(--red-bg);color:var(--red);}
+.btn-danger:hover{background:#f6d8d4;}
+main{max-width:1440px;margin:0 auto;padding:22px 24px 60px;}
+
+.overlay{position:fixed;inset:0;background:rgba(20,25,35,.55);display:none;align-items:center;justify-content:center;z-index:200;padding:20px;}
+.overlay.show{display:flex;}
+.modal{background:#fff;border-radius:14px;max-width:440px;width:100%;max-height:90vh;overflow:auto;padding:26px;box-shadow:0 20px 60px rgba(0,0,0,.25);}
+.modal h3{margin:0 0 6px;font-size:18px;color:var(--navy);}
+#loginOverlay .modal{text-align:center;}
+#loginOverlay p{color:var(--muted);font-size:13px;margin:6px 0 18px;}
+#loginError{color:var(--red);font-size:12.5px;margin-top:8px;display:none;}
+
+.field{margin-bottom:14px;text-align:left;}
+.field label{display:block;font-size:11.5px;font-weight:700;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px;}
+.field input,.field select,.field textarea{width:100%;padding:10px 11px;border:1px solid var(--border);border-radius:7px;font-size:13.5px;font-family:inherit;}
+.field input:disabled{background:var(--gray-bg);color:var(--muted);}
+.field .hint{font-size:11.5px;color:var(--muted);margin-top:5px;}
+.field-row{display:flex;gap:10px;}
+.field-row .field{flex:1;}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:20px;}
+.checkbox-row{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.checkbox-row label{font-size:13px;font-weight:600;color:var(--ink);}
+.deskid-locked{display:flex;align-items:center;gap:8px;}
+.small-note{background:var(--gray-bg);border-radius:7px;padding:9px 11px;font-size:11.5px;color:var(--muted);margin-top:6px;}
+
+.sync-bar{display:flex;align-items:center;gap:10px;padding:11px 15px;border-radius:9px;background:#fff;border:1px solid var(--border);margin-bottom:18px;font-size:13px;color:var(--muted);flex-wrap:wrap;}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;box-shadow:0 0 0 3px var(--green-bg);}
+.sync-dot.warn{background:var(--amber);box-shadow:0 0 0 3px var(--amber-bg);}
+.sync-dot.error{background:var(--red);box-shadow:0 0 0 3px var(--red-bg);}
+#retrySyncBtn{display:none;margin-left:auto;}
+
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:20px;}
+.stat-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;position:relative;overflow:hidden;}
+.stat-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--teal),var(--gold));}
+.stat-card .num{font-size:27px;font-weight:700;color:var(--navy);font-family:Georgia,serif;}
+.stat-card .lbl{font-size:11.5px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.5px;font-weight:600;}
+
+.alerts{margin-bottom:18px;}
+.alert{display:flex;align-items:center;gap:10px;padding:11px 15px;border-radius:9px;margin-bottom:8px;font-size:13px;}
+.alert.warn{background:var(--amber-bg);color:#7a5a05;border:1px solid #f0dca6;}
+.alert.overdue{background:var(--red-bg);color:var(--red);border:1px solid #ecc6c1;}
+
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;}
+.legend-item{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--border);border-radius:20px;padding:5px 12px 5px 8px;font-size:12px;color:var(--ink);font-weight:600;}
+.legend-swatch{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
+
+.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+.toolbar h2{font-size:18px;margin:0;color:var(--navy);}
+.toolbar-actions{display:flex;gap:8px;flex-wrap:wrap;}
+
+.rooms-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;margin-bottom:34px;}
+.room-card{background:#fff;border:1px solid var(--border);border-radius:13px;overflow:hidden;box-shadow:0 1px 3px rgba(30,25,10,.05);}
+.room-card .room-head{display:flex;justify-content:space-between;align-items:center;padding:13px 15px;color:#fff;}
+.room-card .room-head .title{font-weight:700;font-size:14.5px;font-family:Georgia,serif;}
+.room-card .room-head .count{font-size:11px;opacity:.85;margin-top:2px;}
+.room-head-actions{display:flex;gap:6px;}
+.icon-btn{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);width:27px;height:27px;padding:0;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;}
+.icon-btn:hover{background:rgba(255,255,255,.32);}
+.icon-btn.remove:hover{background:var(--red);}
+
+.seat-list{padding:7px;}
+.seat-row{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;margin:3px;border-left:4px solid var(--gray);cursor:pointer;}
+.seat-row:hover{background:var(--gray-bg);}
+.seat-row .seat-num{font-size:11px;color:var(--muted);width:20px;flex-shrink:0;font-weight:600;}
+.seat-row .seat-main{flex:1;min-width:0;}
+.seat-row .occupant{font-size:13.5px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.seat-row .occupant.empty{color:var(--muted);font-weight:400;font-style:italic;}
+.seat-row .meta{font-size:11px;color:var(--muted);display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;}
+.desk-id-tag{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--gray-bg);padding:1px 6px;border-radius:5px;font-size:10.5px;}
+.team-tag{font-size:10.5px;padding:1px 7px;border-radius:10px;font-weight:700;}
+.status-badge{font-size:10px;padding:1px 7px;border-radius:10px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;}
+.status-badge.leave{background:var(--amber-bg);color:#7a5a05;}
+.status-badge.leave.overdue{background:var(--red-bg);color:var(--red);}
+.seat-row-actions{display:flex;gap:4px;flex-shrink:0;}
+.no-rooms{padding:40px;text-align:center;color:var(--muted);}
+.empty-room-note{padding:18px;text-align:center;color:var(--muted);font-size:12px;}
+
+.requests-section{background:#fff;border:1px solid var(--border);border-radius:13px;padding:20px 22px;margin-bottom:24px;}
+.requests-section h2{font-size:17px;color:var(--navy);margin:0 0 4px;}
+.requests-section .desc{font-size:12.5px;color:var(--muted);margin-bottom:16px;}
+.request-form{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;align-items:flex-end;}
+.request-form .field{flex:1;min-width:180px;margin-bottom:0;}
+.request-list{display:flex;flex-direction:column;gap:8px;max-height:280px;overflow:auto;}
+.request-item{background:var(--cream2);border:1px solid var(--border);border-radius:9px;padding:10px 13px;font-size:13px;}
+.request-item .req-head{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:3px;}
+.request-item .req-name{font-weight:700;color:var(--navy);}
+.request-item .req-text{color:var(--ink);}
+
+footer{text-align:center;padding:22px;color:var(--muted);font-size:11.5px;}
+
+@media print{
+  header,.sync-bar,.alerts,.legend,.toolbar,.stats-row,.requests-section,footer,.overlay{display:none !important;}
+  body{background:#fff;}
+  main{padding:0;max-width:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- Login overlay -->
+<div class="overlay show" id="loginOverlay">
+  <div class="modal">
+    <h3>SAGE Office Seating</h3>
+    <p>Enter the office access code to view and edit the live seating chart.</p>
+    <div class="field">
+      <label>Access Code</label>
+      <input type="password" id="fldPasscode" placeholder="Passcode">
+    </div>
+    <div id="loginError">That passcode isn't right — try again.</div>
+    <div class="modal-actions" style="justify-content:center;">
+      <button class="btn-primary" id="btnLogin">Enter</button>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div>
+    <h1>SAGE Office Seating</h1>
+    <div class="sub">Live floor plan &amp; desk assignment tracker — shared by the whole team</div>
+  </div>
+  <div class="header-actions">
+    <button class="btn-ghost btn-small" id="btnExport" title="Download a backup file">Export Backup</button>
+    <button class="btn-ghost btn-small" id="btnImport" title="Restore from a backup file">Import Backup</button>
+    <input type="file" id="fileImport" accept="application/json" style="display:none;">
+    <button class="btn-gold btn-small" id="btnPrintAll">Print Whole Office</button>
+  </div>
+</header>
+
+<main>
+
+  <div class="sync-bar" id="syncBar">
+    <span class="sync-dot" id="syncDot"></span>
+    <span id="syncLabel">Connecting…</span>
+    <button class="btn-secondary btn-small" id="retrySyncBtn">Retry</button>
+  </div>
+
+  <div class="stats-row" id="statsRow"></div>
+
+  <div class="alerts" id="alertsBox"></div>
+
+  <div class="legend" id="teamLegend"></div>
+
+  <div class="toolbar">
+    <h2>Rooms</h2>
+    <div class="toolbar-actions">
+      <button class="btn-secondary btn-small" id="btnAddRoom">+ Add Room</button>
+    </div>
+  </div>
+
+  <div class="rooms-grid" id="roomsGrid"></div>
+
+  <div class="requests-section">
+    <h2>Requests &amp; Notes</h2>
+    <div class="desc">Anyone on the team can leave a note here — a seat change request, a question, or something for the office manager to follow up on. Everyone who opens this page sees the same list.</div>
+    <div class="request-form">
+      <div class="field"><label>Your Name</label><input type="text" id="fldReqName" placeholder="Your name"></div>
+      <div class="field" style="flex:2;"><label>Request / Note</label><input type="text" id="fldReqText" placeholder="e.g. Please move me next to Room 5"></div>
+      <button class="btn-primary btn-small" id="btnAddRequest">Submit</button>
+    </div>
+    <div class="request-list" id="requestList"></div>
+  </div>
+
+  <footer>SAGE Office Seating — everyone who opens this page sees the same live data.</footer>
+</main>
+
+<!-- Seat edit modal -->
+<div class="overlay" id="seatModal">
+  <div class="modal">
+    <h3 id="seatModalTitle">Edit Seat</h3>
+    <div class="field">
+      <label>Desk / Computer ID</label>
+      <div class="deskid-locked">
+        <input type="text" id="fldDeskId" disabled>
+        <button class="btn-secondary btn-small" id="btnFixDeskId" type="button">Change</button>
+      </div>
+      <div class="small-note">This ID is fixed by IT and should never change when a person changes desks. Only use "Change" if IT has physically re-labeled this desk.</div>
+    </div>
+    <div class="field" id="deskIdConfirmWrap" style="display:none;">
+      <label>Confirm current ID to unlock</label>
+      <input type="text" id="fldDeskIdConfirm" placeholder="Retype the ID exactly as shown above">
+      <div class="field" style="margin-top:8px;">
+        <label>New Desk ID</label>
+        <input type="text" id="fldDeskIdNew">
+      </div>
+    </div>
+    <div class="field">
+      <label>Status</label>
+      <select id="fldStatus">
+        <option value="occupied">Occupied</option>
+        <option value="empty">Empty</option>
+      </select>
+    </div>
+    <div class="field" id="wrapOccupant">
+      <label>Occupant Name</label>
+      <input type="text" id="fldOccupant" placeholder="Full name">
+    </div>
+    <div class="field" id="wrapTeam">
+      <label>Team / Group</label>
+      <select id="fldTeamSelect"></select>
+      <input type="text" id="fldTeamNew" placeholder="New team name" style="margin-top:6px;display:none;">
+      <div class="hint">People on the same team get the same color across every room, so you can spot who works together at a glance.</div>
+    </div>
+    <div class="checkbox-row" id="wrapLeaveToggle">
+      <input type="checkbox" id="fldOnLeave">
+      <label for="fldOnLeave">Currently on leave</label>
+    </div>
+    <div id="leaveFields" style="display:none;">
+      <div class="field-row">
+        <div class="field">
+          <label>Expected Return Date</label>
+          <input type="date" id="fldReturnDate">
+        </div>
+      </div>
+      <div class="field">
+        <label>Temporary Replacement (optional)</label>
+        <input type="text" id="fldReplacement" placeholder="Name of temp cover">
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary btn-small" id="btnCancelSeat">Cancel</button>
+      <button class="btn-primary btn-small" id="btnSaveSeat">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add room modal -->
+<div class="overlay" id="roomModal">
+  <div class="modal">
+    <h3>Add Room</h3>
+    <div class="field">
+      <label>Room Name</label>
+      <input type="text" id="fldNewRoomName" placeholder="e.g. Room 13">
+    </div>
+    <div class="field">
+      <label>Number of Seats</label>
+      <input type="number" id="fldNewRoomSeats" min="0" value="6">
+    </div>
+    <div class="field">
+      <label>Desk ID Prefix (optional)</label>
+      <input type="text" id="fldNewRoomPrefix" placeholder="e.g. SAGE-R13">
+      <div class="hint">Leave blank to enter each desk ID manually later. IDs will be numbered automatically if a prefix is given.</div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary btn-small" id="btnCancelRoom">Cancel</button>
+      <button class="btn-primary btn-small" id="btnSaveRoom">Add Room</button>
+    </div>
+  </div>
+</div>
+
+<!-- Rename room modal -->
+<div class="overlay" id="renameModal">
+  <div class="modal">
+    <h3>Rename Room</h3>
+    <div class="field">
+      <label>Room Name</label>
+      <input type="text" id="fldRenameRoom">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary btn-small" id="btnCancelRename">Cancel</button>
+      <button class="btn-primary btn-small" id="btnSaveRename">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============ VALIDATED CATEGORICAL PALETTES ============ */
+const TEAM_PALETTE = ['#1f7a72','#c0392b','#d1a545','#5b3fa0','#1c6ea4','#a0522d','#2e8b57','#8a3b6b'];
+const ROOM_PALETTE = ['#1c2b45','#1f7a72','#9c5a1e','#5b3fa0','#1c6ea4','#7a3b3b','#2e6b4f','#6b5b1e','#3b5b7a','#7a4b6b','#4b6b3b'];
+
+const STORAGE_KEY = 'sage-office-seating-cache-v1';
+let rooms = [];
+let requests = [];
+let currentSeatCtx = null;
+let renameRoomId = null;
+let saveTimer = null;
+let pendingDeskIdChanges = [];
+
+/* ---------- auth ---------- */
+function sanitizeToken(v){ return String(v==null?'':v).replace(/[\r\n\t]/g,'').trim(); }
+function getPasscode(){ return sanitizeToken(sessionStorage.getItem('sage-office-passcode') || ''); }
+function setPasscode(v){ sessionStorage.setItem('sage-office-passcode', sanitizeToken(v)); }
+function authHeaders(){
+  const h = { 'content-type': 'application/json' };
+  const p = getPasscode();
+  if(p) h['x-office-passcode'] = p;
+  return h;
+}
+
+async function attemptLogin(){
+  const val = sanitizeToken(document.getElementById('fldPasscode').value);
+  document.getElementById('loginError').style.display = 'none';
+  try{
+    const res = await fetch('/api/login', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ passcode: val }) });
+    let data;
+    try{ data = await res.json(); }catch{ data = null; }
+    if(res.ok && data && data.ok){
+      setPasscode(val);
+      document.getElementById('loginOverlay').classList.remove('show');
+      fetchState();
+      startAutoRefresh();
+    } else {
+      document.getElementById('loginError').textContent = "That passcode isn't right — try again.";
+      document.getElementById('loginError').style.display = 'block';
+    }
+  }catch(err){
+    document.getElementById('loginError').textContent = 'Could not reach the server: ' + err.message;
+    document.getElementById('loginError').style.display = 'block';
+  }
+}
+
+/* ---------- sync state ---------- */
+function setSync(state, label, showRetry){
+  const dot = document.getElementById('syncDot');
+  dot.className = 'sync-dot' + (state ? ' ' + state : '');
+  document.getElementById('syncLabel').textContent = label;
+  document.getElementById('retrySyncBtn').style.display = showRetry ? 'inline-block' : 'none';
+}
+
+function cacheLocally(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify({ rooms, requests })); }catch(e){}
+}
+function loadCache(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw){ const p = JSON.parse(raw); if(p && Array.isArray(p.rooms)) return p; }
+  }catch(e){}
+  return null;
+}
+
+async function fetchState(){
+  setSync('', 'Loading current office data…');
+  try{
+    const res = await fetch('/api/data', { headers: authHeaders() });
+    if(res.status===401){
+      sessionStorage.removeItem('sage-office-passcode');
+      document.getElementById('loginOverlay').classList.add('show');
+      return;
+    }
+    if(!res.ok){
+      let bodyText='';
+      try{ bodyText = (await res.text()).slice(0,200); }catch(e){}
+      const cache = loadCache();
+      if(cache){ rooms = cache.rooms; requests = cache.requests || []; renderAll(); }
+      setSync('error', `Could not reach the live server (HTTP ${res.status}). Showing the last version seen on this device. ${bodyText}`, true);
+      return;
+    }
+    let data;
+    try{ data = await res.json(); }
+    catch(parseErr){
+      setSync('error', `Server response was not valid data (${parseErr.message}).`, true);
+      return;
+    }
+    if(!data || !Array.isArray(data.rooms)){
+      setSync('error', 'Unexpected response from the server.', true);
+      return;
+    }
+    rooms = data.rooms;
+    requests = Array.isArray(data.requests) ? data.requests : [];
+    cacheLocally();
+    setSync('', 'Live — everyone on the team sees this same version.');
+    renderAll();
+  }catch(err){
+    const cache = loadCache();
+    if(cache){ rooms = cache.rooms; requests = cache.requests || []; renderAll(); }
+    setSync('error', `Could not connect (${err.name}: ${err.message}). Showing the last saved version on this device — reconnect to sync.`, true);
+  }
+}
+
+async function pushState(){
+  setSync('', 'Saving…');
+  try{
+    const res = await fetch('/api/data', {
+      method:'POST', headers: authHeaders(),
+      body: JSON.stringify({ rooms, requests, confirmDeskIdChanges: pendingDeskIdChanges })
+    });
+    pendingDeskIdChanges = [];
+    if(res.status===401){ document.getElementById('loginOverlay').classList.add('show'); return; }
+    if(!res.ok){ setSync('error', 'Could not save — your last change may not have reached the server. Click Retry.', true); return; }
+    const data = await res.json();
+    if(data && data.blockedChanges && data.blockedChanges.length){
+      alert('Note: a Desk ID change was not confirmed correctly, so it was kept at its original value for ' + data.blockedChanges.length + ' seat(s).');
+    }
+    if(data && data.state){ rooms = data.state.rooms; requests = data.state.requests || []; }
+    cacheLocally();
+    setSync('', 'Live — everyone on the team sees this same version.');
+    renderAll();
+  }catch(err){
+    setSync('error', `Could not save (${err.message}). Your change is kept on this device — click Retry once you're back online.`, true);
+    cacheLocally();
+  }
+}
+function scheduleSave(){
+  cacheLocally();
+  renderAll();
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(pushState, 350);
+}
+function startAutoRefresh(){
+  setInterval(()=>{ if(getPasscode() && !document.getElementById('loginOverlay').classList.contains('show')) fetchState(); }, 20000);
+}
+
+/* ---------- team / room colors ---------- */
+function allTeams(){
+  const set = new Set();
+  rooms.forEach(r => (r.seats||[]).forEach(s => { if(s.team) set.add(s.team); }));
+  return Array.from(set).sort((a,b)=>a.localeCompare(b));
+}
+function teamColor(team){
+  if(!team) return null;
+  const teams = allTeams();
+  const idx = teams.indexOf(team);
+  if(idx === -1) return '#8a919c';
+  return TEAM_PALETTE[idx % TEAM_PALETTE.length];
+}
+function roomColor(roomId){
+  const idx = rooms.findIndex(r=>r.id===roomId);
+  return ROOM_PALETTE[(idx<0?0:idx) % ROOM_PALETTE.length];
+}
+function renderTeamLegend(){
+  const teams = allTeams();
+  const el = document.getElementById('teamLegend');
+  if(!teams.length){ el.innerHTML=''; el.style.display='none'; return; }
+  el.style.display='flex';
+  el.innerHTML = teams.map(t => `<span class="legend-item"><span class="legend-swatch" style="background:${teamColor(t)}"></span>${escapeHtml(t)}</span>`).join('');
+}
+
+/* ---------- helpers ---------- */
+function escapeHtml(s){
+  return String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function findSeat(roomId, seatNumber){
+  const room = rooms.find(r => r.id === roomId);
+  if(!room) return null;
+  return room.seats.find(s => s.seatNumber === seatNumber) || null;
+}
+function daysUntil(dateStr){
+  if(!dateStr) return null;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const d = new Date(dateStr + 'T00:00:00');
+  return Math.round((d - today) / 86400000);
+}
+
+/* ---------- stats & alerts ---------- */
+function renderStats(){
+  let total=0, occupied=0, empty=0, onLeave=0;
+  rooms.forEach(r => (r.seats||[]).forEach(s => {
+    total++;
+    if(s.status === 'occupied') occupied++; else empty++;
+    if(s.leave && s.leave.onLeave) onLeave++;
+  }));
+  const pct = total ? Math.round((occupied/total)*100) : 0;
+  const cards = [['Total Seats', total],['Occupied', occupied],['Empty', empty],['% Full', pct + '%'],['On Leave', onLeave]];
+  document.getElementById('statsRow').innerHTML = cards.map(([lbl,num]) =>
+    `<div class="stat-card"><div class="num">${num}</div><div class="lbl">${lbl}</div></div>`).join('');
+}
+function renderAlerts(){
+  const items = [];
+  rooms.forEach(r => (r.seats||[]).forEach(s => {
+    if(s.leave && s.leave.onLeave && s.leave.returnDate){
+      const d = daysUntil(s.leave.returnDate);
+      if(d < 0) items.push({type:'overdue', text:`${s.occupant || 'Seat ' + s.seatNumber} in ${r.name} was expected back ${Math.abs(d)} day(s) ago (${s.leave.returnDate}).`});
+      else if(d <= 7) items.push({type:'warn', text:`${s.occupant || 'Seat ' + s.seatNumber} in ${r.name} is due back in ${d} day(s) (${s.leave.returnDate}).`});
+    }
+  }));
+  const box = document.getElementById('alertsBox');
+  box.innerHTML = items.map(i => `<div class="alert ${i.type}"><span>${i.type==='overdue' ? '⚠ Overdue return — ' : '⏳ Upcoming return — '}${escapeHtml(i.text)}</span></div>`).join('');
+}
+
+/* ---------- rendering rooms ---------- */
+function seatRowHTML(room, seat){
+  const color = teamColor(seat.team) || 'var(--gray)';
+  const isEmpty = seat.status !== 'occupied';
+  const onLeave = seat.leave && seat.leave.onLeave;
+  let overdue = false;
+  if(onLeave && seat.leave.returnDate) overdue = daysUntil(seat.leave.returnDate) < 0;
+  const occupantLine = isEmpty ? `<span class="occupant empty">Empty seat</span>` : `<span class="occupant">${escapeHtml(seat.occupant || 'Unnamed')}</span>`;
+  let metaBits = [`<span class="desk-id-tag">${escapeHtml(seat.deskId || '—')}</span>`];
+  if(seat.team) metaBits.push(`<span class="team-tag" style="background:${color}22;color:${color}">${escapeHtml(seat.team)}</span>`);
+  if(onLeave){
+    metaBits.push(`<span class="status-badge leave ${overdue?'overdue':''}">${overdue?'Overdue':'On leave'} · back ${escapeHtml(seat.leave.returnDate||'?')}</span>`);
+    if(seat.leave.replacement) metaBits.push(`<span class="desk-id-tag">cover: ${escapeHtml(seat.leave.replacement)}</span>`);
+  }
+  return `<div class="seat-row" style="border-left-color:${isEmpty ? 'var(--gray)' : color}" data-room="${room.id}" data-seat="${seat.seatNumber}">
+      <span class="seat-num">#${seat.seatNumber}</span>
+      <span class="seat-main">${occupantLine}<div class="meta">${metaBits.join('')}</div></span>
+      <span class="seat-row-actions"><button class="icon-btn remove-seat" title="Remove this seat" data-room="${room.id}" data-seat="${seat.seatNumber}" style="background:#eee;border-color:#ddd;color:#999;">✕</button></span>
+    </div>`;
+}
+function roomCardHTML(room){
+  const seats = (room.seats||[]).slice().sort((a,b)=>a.seatNumber-b.seatNumber);
+  const occ = seats.filter(s=>s.status==='occupied').length;
+  const rc = roomColor(room.id);
+  const body = seats.length ? `<div class="seat-list">${seats.map(s=>seatRowHTML(room,s)).join('')}</div>` : `<div class="empty-room-note">No seats in this room yet.</div>`;
+  return `<div class="room-card" data-room="${room.id}">
+    <div class="room-head" style="background:linear-gradient(120deg, ${rc}, ${rc}cc);">
+      <div>
+        <div class="title">${escapeHtml(room.name)}</div>
+        <div class="count">${occ}/${seats.length} occupied</div>
+      </div>
+      <div class="room-head-actions">
+        <button class="icon-btn add-seat-btn" title="Add seat" data-room="${room.id}">+</button>
+        <button class="icon-btn rename-btn" title="Rename room" data-room="${room.id}">✎</button>
+        <button class="icon-btn print-room-btn" title="Print this room" data-room="${room.id}">🖶</button>
+        <button class="icon-btn remove remove-room-btn" title="Remove room" data-room="${room.id}">🗑</button>
+      </div>
+    </div>
+    ${body}
+  </div>`;
+}
+function renderRooms(){
+  const grid = document.getElementById('roomsGrid');
+  if(!rooms.length){ grid.innerHTML = '<div class="no-rooms">No rooms yet — click "Add Room" to get started.</div>'; return; }
+  grid.innerHTML = rooms.map(roomCardHTML).join('');
+}
+function renderRequests(){
+  const list = document.getElementById('requestList');
+  if(!requests.length){ list.innerHTML = '<div class="empty-room-note">No requests yet.</div>'; return; }
+  const sorted = requests.slice().sort((a,b)=> (b.at||'').localeCompare(a.at||''));
+  list.innerHTML = sorted.map(r => `<div class="request-item" data-id="${r.id}">
+      <div class="req-head"><span><span class="req-name">${escapeHtml(r.name||'Anonymous')}</span> · ${r.at ? new Date(r.at).toLocaleString() : ''}</span>
+      <button class="btn-secondary btn-small req-remove" data-id="${r.id}">Remove</button></div>
+      <div class="req-text">${escapeHtml(r.text)}</div>
+    </div>`).join('');
+}
+function renderAll(){
+  renderStats();
+  renderAlerts();
+  renderTeamLegend();
+  renderRooms();
+  renderRequests();
+}
+
+/* ---------- requests ---------- */
+function addRequest(){
+  const name = document.getElementById('fldReqName').value.trim();
+  const text = document.getElementById('fldReqText').value.trim();
+  if(!text){ alert('Please enter a request or note.'); return; }
+  requests.push({ id: 'req-' + Date.now() + '-' + Math.random().toString(36).slice(2,7), name: name || 'Anonymous', text, at: new Date().toISOString() });
+  document.getElementById('fldReqName').value = '';
+  document.getElementById('fldReqText').value = '';
+  scheduleSave();
+}
+function removeRequest(id){
+  requests = requests.filter(r => r.id !== id);
+  scheduleSave();
+}
+
+/* ---------- seat modal ---------- */
+function populateTeamSelect(currentTeam){
+  const sel = document.getElementById('fldTeamSelect');
+  const teams = allTeams();
+  let opts = `<option value="">— No team —</option>`;
+  opts += teams.map(t => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join('');
+  opts += `<option value="__new__">+ New team…</option>`;
+  sel.innerHTML = opts;
+  sel.value = currentTeam && teams.includes(currentTeam) ? currentTeam : '';
+  document.getElementById('fldTeamNew').style.display = 'none';
+}
+function openSeatModal(roomId, seatNumber){
+  const seat = findSeat(roomId, seatNumber);
+  if(!seat) return;
+  currentSeatCtx = {roomId, seatNumber};
+  document.getElementById('seatModalTitle').textContent = 'Room seat #' + seatNumber;
+  document.getElementById('fldDeskId').value = seat.deskId || '';
+  document.getElementById('fldDeskId').disabled = true;
+  document.getElementById('deskIdConfirmWrap').style.display = 'none';
+  document.getElementById('fldDeskIdConfirm').value = '';
+  document.getElementById('fldDeskIdNew').value = '';
+  document.getElementById('fldStatus').value = seat.status || 'empty';
+  document.getElementById('fldOccupant').value = seat.occupant || '';
+  populateTeamSelect(seat.team);
+  const onLeave = !!(seat.leave && seat.leave.onLeave);
+  document.getElementById('fldOnLeave').checked = onLeave;
+  document.getElementById('leaveFields').style.display = onLeave ? 'block' : 'none';
+  document.getElementById('fldReturnDate').value = (seat.leave && seat.leave.returnDate) || '';
+  document.getElementById('fldReplacement').value = (seat.leave && seat.leave.replacement) || '';
+  document.getElementById('seatModal').classList.add('show');
+}
+function closeSeatModal(){ document.getElementById('seatModal').classList.remove('show'); currentSeatCtx = null; }
+function saveSeat(){
+  if(!currentSeatCtx) return;
+  const seat = findSeat(currentSeatCtx.roomId, currentSeatCtx.seatNumber);
+  if(!seat) return;
+
+  const confirmWrapVisible = document.getElementById('deskIdConfirmWrap').style.display !== 'none';
+  if(confirmWrapVisible){
+    const typedConfirm = document.getElementById('fldDeskIdConfirm').value.trim();
+    const newId = document.getElementById('fldDeskIdNew').value.trim();
+    if(typedConfirm !== (seat.deskId||'')){
+      alert('The confirmation ID does not match the current desk ID exactly. Desk ID was not changed.');
+      return;
+    }
+    if(newId && newId !== seat.deskId){
+      pendingDeskIdChanges.push({ room: currentSeatCtx.roomId, seatNumber: currentSeatCtx.seatNumber, oldId: seat.deskId, newId });
+      seat.deskId = newId;
+    }
+  }
+
+  seat.status = document.getElementById('fldStatus').value;
+  seat.occupant = seat.status === 'occupied' ? (document.getElementById('fldOccupant').value.trim() || null) : null;
+
+  let team = document.getElementById('fldTeamSelect').value;
+  if(team === '__new__') team = document.getElementById('fldTeamNew').value.trim();
+  seat.team = team || null;
+
+  const onLeave = document.getElementById('fldOnLeave').checked;
+  seat.leave = onLeave ? {
+    onLeave: true,
+    returnDate: document.getElementById('fldReturnDate').value || null,
+    replacement: document.getElementById('fldReplacement').value.trim() || null
+  } : null;
+
+  closeSeatModal();
+  scheduleSave();
+}
+
+/* ---------- room-level actions ---------- */
+function addRoomSubmit(){
+  const name = document.getElementById('fldNewRoomName').value.trim();
+  if(!name){ alert('Please enter a room name.'); return; }
+  const count = Math.max(0, parseInt(document.getElementById('fldNewRoomSeats').value, 10) || 0);
+  const prefix = document.getElementById('fldNewRoomPrefix').value.trim();
+  const seats = [];
+  for(let i=1;i<=count;i++) seats.push({ seatNumber:i, deskId: prefix ? `${prefix}-${i}` : '', status:'empty', occupant:null, leave:null, team:null });
+  rooms.push({ id: 'room-' + Date.now(), name, type:'desks', seats });
+  document.getElementById('roomModal').classList.remove('show');
+  document.getElementById('fldNewRoomName').value='';
+  document.getElementById('fldNewRoomSeats').value='6';
+  document.getElementById('fldNewRoomPrefix').value='';
+  scheduleSave();
+}
+function removeRoom(roomId){
+  const room = rooms.find(r=>r.id===roomId);
+  if(!room) return;
+  if(!confirm(`Remove "${room.name}" and all ${(room.seats||[]).length} seat(s) in it? This cannot be undone (unless you have an exported backup).`)) return;
+  rooms = rooms.filter(r=>r.id!==roomId);
+  scheduleSave();
+}
+function addSeatToRoom(roomId){
+  const room = rooms.find(r=>r.id===roomId);
+  if(!room) return;
+  const nextNum = (room.seats.length ? Math.max(...room.seats.map(s=>s.seatNumber)) : 0) + 1;
+  const deskId = prompt('Desk / Computer ID for this new seat (leave blank to fill in later):', '') || '';
+  room.seats.push({ seatNumber: nextNum, deskId, status:'empty', occupant:null, leave:null, team:null });
+  scheduleSave();
+}
+function removeSeatDirect(roomId, seatNumber){
+  const room = rooms.find(r=>r.id===roomId);
+  if(!room) return;
+  const seat = room.seats.find(s=>s.seatNumber===seatNumber);
+  if(!confirm(`Remove seat #${seatNumber}${seat && seat.occupant ? ' ('+seat.occupant+')' : ''} from ${room.name}?`)) return;
+  room.seats = room.seats.filter(s=>s.seatNumber!==seatNumber);
+  scheduleSave();
+}
+function openRenameModal(roomId){
+  const room = rooms.find(r=>r.id===roomId);
+  if(!room) return;
+  renameRoomId = roomId;
+  document.getElementById('fldRenameRoom').value = room.name;
+  document.getElementById('renameModal').classList.add('show');
+}
+function saveRename(){
+  const room = rooms.find(r=>r.id===renameRoomId);
+  if(!room) return;
+  const name = document.getElementById('fldRenameRoom').value.trim();
+  if(!name){ alert('Room name cannot be empty.'); return; }
+  room.name = name;
+  document.getElementById('renameModal').classList.remove('show');
+  scheduleSave();
+}
+
+/* ---------- print ---------- */
+function teamCellHTML(seat){ return seat.team ? escapeHtml(seat.team) : '—'; }
+function roomTableRows(room){
+  const seats = (room.seats||[]).slice().sort((a,b)=>a.seatNumber-b.seatNumber);
+  if(!seats.length) return '<tr><td colspan="5" style="text-align:center;color:#888;">No seats</td></tr>';
+  return seats.map(s => `<tr>
+      <td>${s.seatNumber}</td><td>${escapeHtml(s.deskId||'—')}</td>
+      <td>${s.status==='occupied' ? escapeHtml(s.occupant||'Unnamed') : '<em>Empty</em>'}</td>
+      <td>${teamCellHTML(s)}</td>
+      <td>${s.leave && s.leave.onLeave ? 'On leave — back ' + escapeHtml(s.leave.returnDate||'?') + (s.leave.replacement ? ' (cover: '+escapeHtml(s.leave.replacement)+')' : '') : ''}</td>
+    </tr>`).join('');
+}
+function printDocument(title, bodyHTML){
+  const win = window.open('', '_blank');
+  win.document.write('<!DOCTYPE html><html><head><title>' + escapeHtml(title) + '</title>' +
+    '<style>body{font-family:Arial,Helvetica,sans-serif;padding:24px;color:#1c2333;}' +
+    'h1{font-size:18px;margin-bottom:4px;}h2{font-size:14px;margin:22px 0 6px;border-bottom:1px solid #ccc;padding-bottom:4px;}' +
+    'table{width:100%;border-collapse:collapse;margin-bottom:10px;font-size:12px;}th,td{border:1px solid #ddd;padding:5px 8px;text-align:left;}' +
+    'th{background:#f2f4f7;}.meta{color:#666;font-size:11px;margin-bottom:14px;}</style></head><body>' +
+    bodyHTML + '</body></html>');
+  win.document.close();
+  win.onload = function(){ setTimeout(function(){ win.print(); }, 200); };
+  setTimeout(function(){ try{ win.print(); }catch(e){} }, 400);
+}
+function printRoom(roomId){
+  const room = rooms.find(r=>r.id===roomId);
+  if(!room) return;
+  const body = `<h1>SAGE Office Seating</h1><div class="meta">${escapeHtml(room.name)} — printed ${new Date().toLocaleString()}</div>
+    <h2>${escapeHtml(room.name)}</h2><table><thead><tr><th>Seat #</th><th>Desk ID</th><th>Occupant</th><th>Team</th><th>Notes</th></tr></thead>
+    <tbody>${roomTableRows(room)}</tbody></table>`;
+  printDocument('SAGE Office — ' + room.name, body);
+}
+function printAllRooms(){
+  const sections = rooms.map(room => `<h2>${escapeHtml(room.name)}</h2>
+    <table><thead><tr><th>Seat #</th><th>Desk ID</th><th>Occupant</th><th>Team</th><th>Notes</th></tr></thead>
+    <tbody>${roomTableRows(room)}</tbody></table>`).join('');
+  printDocument('SAGE Office — Full Office', `<h1>SAGE Office Seating — Full Office</h1><div class="meta">Printed ${new Date().toLocaleString()}</div>${sections}`);
+}
+
+/* ---------- export / import ---------- */
+function exportData(){
+  const payload = { rooms, requests, exportedAt: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type:'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `sage-office-seating-${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+function importData(file){
+  const reader = new FileReader();
+  reader.onload = () => {
+    try{
+      const parsed = JSON.parse(reader.result);
+      if(!parsed || !Array.isArray(parsed.rooms)) throw new Error('This file does not look like a SAGE Office Seating backup.');
+      rooms = parsed.rooms;
+      requests = Array.isArray(parsed.requests) ? parsed.requests : [];
+      scheduleSave();
+    }catch(err){ alert('Could not load this file: ' + err.message); }
+  };
+  reader.readAsText(file);
+}
+
+/* ---------- event wiring ---------- */
+document.addEventListener('click', (e) => {
+  const seatRow = e.target.closest('.seat-row');
+  if(seatRow && !e.target.closest('.seat-row-actions')){ openSeatModal(seatRow.dataset.room, parseInt(seatRow.dataset.seat,10)); return; }
+  const rmSeat = e.target.closest('.remove-seat'); if(rmSeat){ removeSeatDirect(rmSeat.dataset.room, parseInt(rmSeat.dataset.seat,10)); return; }
+  const addSeat = e.target.closest('.add-seat-btn'); if(addSeat){ addSeatToRoom(addSeat.dataset.room); return; }
+  const rename = e.target.closest('.rename-btn'); if(rename){ openRenameModal(rename.dataset.room); return; }
+  const printBtn = e.target.closest('.print-room-btn'); if(printBtn){ printRoom(printBtn.dataset.room); return; }
+  const rmRoom = e.target.closest('.remove-room-btn'); if(rmRoom){ removeRoom(rmRoom.dataset.room); return; }
+  const rmReq = e.target.closest('.req-remove'); if(rmReq){ removeRequest(rmReq.dataset.id); return; }
+});
+
+document.getElementById('fldOnLeave').addEventListener('change', (e)=>{ document.getElementById('leaveFields').style.display = e.target.checked ? 'block' : 'none'; });
+document.getElementById('fldTeamSelect').addEventListener('change', (e)=>{ document.getElementById('fldTeamNew').style.display = e.target.value === '__new__' ? 'block' : 'none'; });
+document.getElementById('fldStatus').addEventListener('change', (e)=>{ document.getElementById('wrapOccupant').style.display = e.target.value === 'occupied' ? 'block' : 'none'; });
+document.getElementById('btnFixDeskId').addEventListener('click', ()=>{ document.getElementById('deskIdConfirmWrap').style.display = 'block'; });
+document.getElementById('btnCancelSeat').addEventListener('click', closeSeatModal);
+document.getElementById('btnSaveSeat').addEventListener('click', saveSeat);
+
+document.getElementById('btnAddRoom').addEventListener('click', ()=> document.getElementById('roomModal').classList.add('show'));
+document.getElementById('btnCancelRoom').addEventListener('click', ()=> document.getElementById('roomModal').classList.remove('show'));
+document.getElementById('btnSaveRoom').addEventListener('click', addRoomSubmit);
+
+document.getElementById('btnCancelRename').addEventListener('click', ()=> document.getElementById('renameModal').classList.remove('show'));
+document.getElementById('btnSaveRename').addEventListener('click', saveRename);
+
+document.getElementById('btnExport').addEventListener('click', exportData);
+document.getElementById('btnImport').addEventListener('click', ()=> document.getElementById('fileImport').click());
+document.getElementById('fileImport').addEventListener('change', (e)=>{ if(e.target.files && e.target.files[0]) importData(e.target.files[0]); e.target.value=''; });
+document.getElementById('btnPrintAll').addEventListener('click', printAllRooms);
+document.getElementById('btnAddRequest').addEventListener('click', addRequest);
+document.getElementById('retrySyncBtn').addEventListener('click', fetchState);
+document.getElementById('btnLogin').addEventListener('click', attemptLogin);
+document.getElementById('fldPasscode').addEventListener('keydown', (e)=>{ if(e.key==='Enter') attemptLogin(); });
+
+document.querySelectorAll('.overlay').forEach(ov => { ov.addEventListener('click', (e) => { if(e.target === ov && ov.id !== 'loginOverlay') ov.classList.remove('show'); }); });
+
+/* ---------- init ---------- */
+if(getPasscode()){
+  document.getElementById('loginOverlay').classList.remove('show');
+  fetchState();
+  startAutoRefresh();
+} else {
+  document.getElementById('fldPasscode').focus();
+}
+</script>
+</body>
+</html>
