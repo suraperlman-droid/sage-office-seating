@@ -1,0 +1,646 @@
+[
+  {
+    "id": "room-room-1",
+    "name": "Room 1",
+    "type": "desks",
+    "seats": [
+      {
+        "seatNumber": 1,
+        "deskId": "SAGE-R01-11",
+        "status": "occupied",
+        "occupant": "Sarah Einhorn",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 2,
+        "deskId": "SAGE-R01-12",
+        "status": "occupied",
+        "occupant": "Rochi Gelfand",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 3,
+        "deskId": "SAGE-R01-15",
+        "status": "occupied",
+        "occupant": "Layala Brach",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 4,
+        "deskId": "SAGE-R01-14",
+        "status": "occupied",
+        "occupant": "Zissy Hershkowitz",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 5,
+        "deskId": "SAGE-R01-10",
+        "status": "empty",
+        "occupant": null,
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 6,
+        "deskId": "SAGE-R01-13",
+        "status": "empty",
+        "occupant": null,
+        "leave": null,
+        "team": null
+      }
+    ]
+  },
+  {
+    "id": "room-2",
+    "name": "Room 2 — Conference Room",
+    "type": "conference",
+    "seats": []
+  },
+  {
+    "id": "room-room-3",
+    "name": "Room 3",
+    "type": "desks",
+    "seats": [
+      {
+        "seatNumber": 1,
+        "deskId": "SAGE-R03-31",
+        "status": "occupied",
+        "occupant": "Malky Friedman",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 2,
+        "deskId": "SAGE-R03-32",
+        "status": "occupied",
+        "occupant": "Peri Rottenberg",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 3,
+        "deskId": "SAGE-R03-33",
+        "status": "occupied",
+        "occupant": "Henny Fischer",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 4,
+        "deskId": "SAGE-R03-34",
+        "status": "occupied",
+        "occupant": "Chany Brecher",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 5,
+        "deskId": "SAGE-R03-35",
+        "status": "occupied",
+        "occupant": "Chany Tyberg",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 6,
+        "deskId": "SAGE-R03-36",
+        "status": "occupied",
+        "occupant": "Shifra Kaufman",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 7,
+        "deskId": "SAGE-R03-37",
+        "status": "occupied",
+        "occupant": "Nechama Miriam Herman",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 8,
+        "deskId": "SAGE-R03-38",
+        "status": "occupied",
+        "occupant": "Rochel Leah Goldberger",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 9,
+        "deskId": "SAGE-R03-39",
+        "status": "occupied",
+        "occupant": "Malky Brach",
+        "leave": null,
+        "team": null
+      }
+    ]
+  },
+  {
+    "id": "room-room-4",
+    "name": "Room 4",
+    "type": "desks",
+    "seats": [
+      {
+        "seatNumber": 1,
+        "deskId": "SAGE-R04-41",
+        "status": "occupied",
+        "occupant": "Romi Feldman",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 2,
+        "deskId": "SAGE-R04-42",
+        "status": "occupied",
+        "occupant": "Gitty Jacobawitz",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 3,
+        "deskId": "SAGE-R04-43",
+        "status": "occupied",
+        "occupant": "Nomi Reich",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 4,
+        "deskId": "SAGE-R04-44",
+        "status": "occupied",
+        "occupant": "Breindy Frand",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 5,
+        "deskId": "SAGE-R04-48",
+        "status": "occupied",
+        "occupant": "Rina Benedikt",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 6,
+        "deskId": "SAGE-R04-49",
+        "status": "occupied",
+        "occupant": "Vivian Cohen",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 7,
+        "deskId": "SAGE-R04-50",
+        "status": "occupied",
+        "occupant": "Chayala Englard",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 8,
+        "deskId": "SAGE-R04-47",
+        "status": "occupied",
+        "occupant": "Dini Wolodarsky",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 9,
+        "deskId": "SAGE-R04-46",
+        "status": "occupied",
+        "occupant": "Chavy Guttman",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 10,
+        "deskId": "SAGE-R04-45",
+        "status": "occupied",
+        "occupant": "Sura Gitty Perlman",
+        "leave": null,
+        "team": null
+      }
+    ]
+  },
+  {
+    "id": "room-room-5",
+    "name": "Room 5",
+    "type": "desks",
+    "seats": [
+      {
+        "seatNumber": 1,
+        "deskId": "SAGE-R05-51",
+        "status": "occupied",
+        "occupant": "Leah Brach",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 2,
+        "deskId": "SAGE-R05-52",
+        "status": "occupied",
+        "occupant": "Ruchi Eisen",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 3,
+        "deskId": "SAGE-R05-53",
+        "status": "occupied",
+        "occupant": "Blimi Schwartz",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 4,
+        "deskId": "SAGE-R05-54",
+        "status": "occupied",
+        "occupant": "Shoshana Raizel",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 5,
+        "deskId": "SAGE-R05-55",
+        "status": "occupied",
+        "occupant": "Perella Benedikt",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 6,
+        "deskId": "SAGE-R05-56",
+        "status": "occupied",
+        "occupant": "Rivki Schwartz",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 7,
+        "deskId": "SAGE-R05-59",
+        "status": "occupied",
+        "occupant": "Malli Schreiber",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 8,
+        "deskId": "SAGE-R05-58",
+        "status": "occupied",
+        "occupant": "Goldy Gottlieb",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 9,
+        "deskId": "SAGE-R05-57",
+        "status": "occupied",
+        "occupant": "Udi Zelcer",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 10,
+        "deskId": "SAGE-R05-62",
+        "status": "occupied",
+        "occupant": "Chayelle Wolf",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 11,
+        "deskId": "SAGE-R05-61",
+        "status": "occupied",
+        "occupant": "Rikki Wiesner",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 12,
+        "deskId": "SAGE-R05-60",
+        "status": "occupied",
+        "occupant": "Rikki Meisels",
+        "leave": null,
+        "team": null
+      }
+    ]
+  },
+  {
+    "id": "room-room-7",
+    "name": "Room 7",
+    "type": "desks",
+    "seats": [
+      {
+        "seatNumber": 1,
+        "deskId": "SAGE-R07-71",
+        "status": "occupied",
+        "occupant": "Hennie Langner",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 2,
+        "deskId": "SAGE-R07-72",
+        "status": "occupied",
+        "occupant": "Pelli Naiman",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 3,
+        "deskId": "SAGE-R07-73",
+        "status": "occupied",
+        "occupant": "Yehudis Appel",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 4,
+        "deskId": "SAGE-R07-74",
+        "status": "occupied",
+        "occupant": "Chani Kovelenko",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 5,
+        "deskId": "SAGE-R07-75",
+        "status": "occupied",
+        "occupant": "Esther Wengner",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 6,
+        "deskId": "SAGE-R07-76",
+        "status": "occupied",
+        "occupant": "Gitty Katzenberg",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 7,
+        "deskId": "SAGE-R07-77",
+        "status": "occupied",
+        "occupant": "Mirala Fink",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 8,
+        "deskId": "SAGE-R07-78",
+        "status": "occupied",
+        "occupant": "Chani Pluczenik",
+        "leave": null,
+        "team": null
+      }
+    ]
+  },
+  {
+    "id": "room-room-8-—-little-room",
+    "name": "Room 8 — Little Room",
+    "type": "desks",
+    "seats": [
+      {
+        "seatNumber": 1,
+        "deskId": "SAGE-R08-81",
+        "status": "occupied",
+        "occupant": "Golda Gold",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 2,
+        "deskId": "SAGE-R08-82",
+        "status": "empty",
+        "occupant": null,
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 3,
+        "deskId": "SAGE-R08-83",
+        "status": "empty",
+        "occupant": null,
+        "leave": null,
+        "team": null
+      }
+    ]
+  },
+  {
+    "id": "room-room-9",
+    "name": "Room 9",
+    "type": "desks",
+    "seats": [
+      {
+        "seatNumber": 1,
+        "deskId": "SAGE-R09-91",
+        "status": "occupied",
+        "occupant": "Fraidy Greenwald",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 2,
+        "deskId": "SAGE-R09-92",
+        "status": "empty",
+        "occupant": null,
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 3,
+        "deskId": "SAGE-R09-93",
+        "status": "empty",
+        "occupant": null,
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 4,
+        "deskId": "SAGE-R09-94",
+        "status": "empty",
+        "occupant": null,
+        "leave": null,
+        "team": null
+      }
+    ]
+  },
+  {
+    "id": "room-room-10",
+    "name": "Room 10",
+    "type": "desks",
+    "seats": [
+      {
+        "seatNumber": 1,
+        "deskId": "SAGE-R10-101",
+        "status": "occupied",
+        "occupant": "Zissy Bernstien",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 2,
+        "deskId": "SAGE-R10-102",
+        "status": "occupied",
+        "occupant": "Dina Friedman",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 3,
+        "deskId": "SAGE-R10-103",
+        "status": "occupied",
+        "occupant": "Esti Friedman",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 4,
+        "deskId": "SAGE-R10-104",
+        "status": "occupied",
+        "occupant": "Bella Reiner",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 5,
+        "deskId": "SAGE-R10-105",
+        "status": "occupied",
+        "occupant": "Bina Blau",
+        "leave": null,
+        "team": null
+      }
+    ]
+  },
+  {
+    "id": "room-room-11",
+    "name": "Room 11",
+    "type": "desks",
+    "seats": [
+      {
+        "seatNumber": 1,
+        "deskId": "SAGE-R11-111",
+        "status": "occupied",
+        "occupant": "Suri Hayum",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 2,
+        "deskId": "SAGE-R11-112",
+        "status": "occupied",
+        "occupant": "Malky Templer",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 3,
+        "deskId": "SAGE-R11-113",
+        "status": "occupied",
+        "occupant": "Goldi Kraus",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 4,
+        "deskId": "SAGE-R11-114",
+        "status": "occupied",
+        "occupant": "Chanie Fink",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 5,
+        "deskId": "SAGE-R11-115",
+        "status": "occupied",
+        "occupant": "Sarah Ettinger",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 6,
+        "deskId": "SAGE-R11-117",
+        "status": "occupied",
+        "occupant": "Perela Goldenberg",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 7,
+        "deskId": "SAGE-R11-116",
+        "status": "occupied",
+        "occupant": "Malky Templer",
+        "leave": null,
+        "team": null
+      }
+    ]
+  },
+  {
+    "id": "room-room-12",
+    "name": "Room 12",
+    "type": "desks",
+    "seats": [
+      {
+        "seatNumber": 1,
+        "deskId": "SAGE-R12-121",
+        "status": "occupied",
+        "occupant": "Chany Van Messel / Mayerfeld",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 2,
+        "deskId": "SAGE-R12-122",
+        "status": "occupied",
+        "occupant": "Miri Weinstock",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 3,
+        "deskId": "SAGE-R12-123",
+        "status": "occupied",
+        "occupant": "Rachel Saffer",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 4,
+        "deskId": "SAGE-R12-124",
+        "status": "occupied",
+        "occupant": "Chevy Goldner",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 5,
+        "deskId": "SAGE-R12-125",
+        "status": "occupied",
+        "occupant": "Sari Stern",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 6,
+        "deskId": "SAGE-R12-126",
+        "status": "occupied",
+        "occupant": "Ruchy Bergman",
+        "leave": null,
+        "team": null
+      },
+      {
+        "seatNumber": 7,
+        "deskId": "SAGE-R12-127",
+        "status": "occupied",
+        "occupant": "Batsheva Eckstein",
+        "leave": null,
+        "team": null
+      }
+    ]
+  }
+]
